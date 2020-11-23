@@ -1,4 +1,5 @@
 from django.db import models
+from datetime import datetime
 
 from users.models import User
 
@@ -17,4 +18,5 @@ class Idea(models.Model):
         default='1'
     )
     creator = models.ForeignKey(User, on_delete=models.CASCADE)
+    created_at = models.DateField(default=datetime.now)
 
