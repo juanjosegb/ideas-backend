@@ -12,6 +12,7 @@ services:
     command: python manage.py runserver 0.0.0.0:8000 --settings=settings.settings_dev
     env_file:
       - ./.envs/.postgres
+      - ./.envs/.django
     volumes:
       - .:/code
     ports:

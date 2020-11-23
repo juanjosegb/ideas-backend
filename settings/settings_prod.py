@@ -1,9 +1,10 @@
-from .settings_base import *
+from .settings import *
+import os
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
-SECRET_KEY = "e%ebfxesa1%5ot@^nqru7!i_705qq7*@30b3-ui5eztoi8$#$p^u1d"
+SECRET_KEY = os.environ["SECRET_KEY"]
 DEBUG = 0
 
 ALLOWED_HOSTS = []
