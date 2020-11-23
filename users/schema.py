@@ -1,12 +1,7 @@
-from django.contrib.auth import get_user_model
-
 import graphene
-from graphene_django import DjangoObjectType
 
-
-class UserType(DjangoObjectType):
-    class Meta:
-        model = get_user_model()
+from django.contrib.auth import get_user_model
+from users.types import UserType
 
 
 class CreateUser(graphene.Mutation):
@@ -28,20 +23,22 @@ class CreateUser(graphene.Mutation):
         return CreateUser(user=user)
 
 
-class Mutation(graphene.ObjectType):
-    create_user = CreateUser.Field()
+class ChangePassword(graphene.Mutation):
+    user = graphene.Field(UserType)
 
+    class Arguments:
+        password = graphene.String(required=True)
+        confirm = graphene.String(required=True)
 
-class Query(graphene.AbstractType):
-    me = graphene.Field(UserType)
-    users = graphene.List(UserType)
-
-    def resolve_users(self, info):
-        return get_user_model().objects.all()
-
-    def resolve_me(self, info):
+    def mutate(self, info, password, confirm):
         user = info.context.user
         if user.is_anonymous:
             raise Exception('Not logged in!')
+        if password != confirm:
+            raise Exception('Password confirmation does not match!')
+        user = get_user_model()
+        user.set_password(password)
+        user.save()
 
-        return user
+        return ChangePassword(user=user)
+
