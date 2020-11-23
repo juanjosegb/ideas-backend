@@ -36,7 +36,6 @@ class ChangePassword(graphene.Mutation):
             raise Exception('Not logged in!')
         if password != confirm:
             raise Exception('Password confirmation does not match!')
-        user = get_user_model()
         user.set_password(password)
         user.save()
 
