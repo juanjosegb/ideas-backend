@@ -1,5 +1,6 @@
 import graphene
 from django.contrib.auth import get_user_model
+from django.contrib.auth.decorators import login_required
 
 from users.types import UserType
 
@@ -7,5 +8,6 @@ from users.types import UserType
 class Query(graphene.AbstractType):
     users = graphene.List(UserType)
 
-    def resolve_users(self, info):
-        return get_user_model().objects.all()
+    @login_required
+    def resolve_find_users(self, info, text):
+        return get_user_model().objects.filter(username__contains=text)
