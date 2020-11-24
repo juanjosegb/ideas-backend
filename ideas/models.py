@@ -4,9 +4,9 @@ from datetime import datetime
 from users.models import User
 
 VISIBILITY_CHOICES = (
-    ("PUBLIC", "1"),
-    ("PROTECTED", "2"),
-    ("PRIVATE", "3")
+    ("PUBLIC", "PUBLIC"),
+    ("PROTECTED", "PROTECTED"),
+    ("PRIVATE", "PRIVATE")
 )
 
 
@@ -15,7 +15,7 @@ class Idea(models.Model):
     visibility = models.CharField(
         max_length=20,
         choices=VISIBILITY_CHOICES,
-        default='1'
+        default='PUBLIC'
     )
     creator = models.ForeignKey(User, on_delete=models.CASCADE)
     created_at = models.DateField(default=datetime.now)

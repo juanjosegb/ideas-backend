@@ -40,14 +40,16 @@ class UpdateIdea(graphene.Mutation):
 
 
 class DeleteIdea(graphene.Mutation):
-    idea = graphene.Field(IdeaType)
+    ok = graphene.Boolean()
 
     class Arguments:
         pk = graphene.ID()
 
     @login_required
     def mutate(self, info, pk):
-        idea = Idea.objects.get(pk=pk)
-        idea.delete()
-
-        return True
+        try:
+            idea = Idea.objects.get(pk=pk)
+            idea.delete()
+        except Idea.DoesNotExist:
+            return DeleteIdea(ok=False)
+        return DeleteIdea(ok=True)
