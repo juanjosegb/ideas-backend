@@ -1,4 +1,5 @@
 import graphene
+from graphql_jwt.decorators import login_required
 
 from ideas.models import Idea
 from ideas.types import IdeaType
@@ -11,11 +12,10 @@ class CreateIdea(graphene.Mutation):
         text = graphene.String(required=True)
         visibility = graphene.String(required=True)
 
+    @login_required
     def mutate(self, info, text, visibility):
-        user = info.context.user
-        if user.is_anonymous:
-            raise Exception('Not logged in!')
-        idea = Idea(text=text, visibility=visibility, creator=user)
+        creator = info.context.user
+        idea = Idea(text=text, visibility=visibility, creator=creator)
         idea.save()
 
         return CreateIdea(idea=idea)
@@ -29,10 +29,8 @@ class UpdateIdea(graphene.Mutation):
         text = graphene.String(required=True)
         visibility = graphene.String(required=True)
 
+    @login_required
     def mutate(self, info, pk, text, visibility):
-        user = info.context.user
-        if user.is_anonymous:
-            raise Exception('Not logged in!')
         idea = Idea.objects.get(pk=pk)
         idea.text = text
         idea.visibility = visibility
@@ -47,10 +45,8 @@ class DeleteIdea(graphene.Mutation):
     class Arguments:
         pk = graphene.ID()
 
+    @login_required
     def mutate(self, info, pk):
-        user = info.context.user
-        if user.is_anonymous:
-            raise Exception('Not logged in!')
         idea = Idea.objects.get(pk=pk)
         idea.delete()
 

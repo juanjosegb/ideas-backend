@@ -1,6 +1,8 @@
 import graphene
 
 from django.contrib.auth import get_user_model
+from graphql_jwt.decorators import login_required
+
 from users.types import UserType
 
 
@@ -30,12 +32,11 @@ class ChangePassword(graphene.Mutation):
         password = graphene.String(required=True)
         confirm = graphene.String(required=True)
 
+    @login_required
     def mutate(self, info, password, confirm):
-        user = info.context.user
-        if user.is_anonymous:
-            raise Exception('Not logged in!')
         if password != confirm:
             raise Exception('Password confirmation does not match!')
+        user = info.context.user
         user.set_password(password)
         user.save()
 

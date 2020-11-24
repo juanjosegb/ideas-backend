@@ -1,4 +1,5 @@
 import graphene
+from graphql_jwt.decorators import login_required
 
 from ideas.models import Idea
 from ideas.types import IdeaType
@@ -7,8 +8,7 @@ from ideas.types import IdeaType
 class Query(graphene.AbstractType):
     my_ideas = graphene.List(IdeaType)
 
+    @login_required
     def resolve_my_ideas(self, info):
-        user = info.context.user
-        if user.is_anonymous:
-            raise Exception('Not logged in!')
-        return Idea.objects.filter(creator=user).order_by('created_at')
+        creator = info.context.user
+        return Idea.objects.filter(creator=creator).order_by('created_at')
