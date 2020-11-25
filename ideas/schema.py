@@ -3,6 +3,7 @@ from graphql_jwt.decorators import login_required
 
 from ideas.models import Idea
 from ideas.types import IdeaType
+from ideas.utils import send_ideas_to_followers
 
 
 class CreateIdea(graphene.Mutation):
@@ -17,6 +18,7 @@ class CreateIdea(graphene.Mutation):
         creator = info.context.user
         idea = Idea(text=text, visibility=visibility, creator=creator)
         idea.save()
+        send_ideas_to_followers(creator, idea)
 
         return CreateIdea(idea=idea)
 
