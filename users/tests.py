@@ -20,7 +20,7 @@ class ManagementUserTestCase(GraphQLTestCase):
         response = self.query(
             graphql,
             op_name='createUser',
-            variables={'username': 'username', 'email': 'email', 'password': 'password'},
+            variables={'username': 'username_test', 'email': 'email_test', 'password': 'password_test'},
         )
         self.assertResponseNoErrors(response)
 
