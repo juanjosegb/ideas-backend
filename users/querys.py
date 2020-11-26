@@ -6,8 +6,9 @@ from users.types import UserType
 
 
 class Query(graphene.AbstractType):
-    users = graphene.List(UserType)
+    find_users = graphene.List(UserType)
 
     @login_required
     def resolve_find_users(self, info, text):
         return get_user_model().objects.filter(username__contains=text)
+
