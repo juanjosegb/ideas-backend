@@ -32,10 +32,11 @@ Create two files .django and .postgres inside folder .envs.
 
 .postgres contains the connection parameters to Postgres database, will be similar to:
 
-`POSTGRES_DB=db_name`   
-`POSTGRES_PASSWORD=db_password`   
-`POSTGRES_HOST=db`   
-`POSTGRES_PORT=5432`   
+`POSTGRES_DB=db`  
+`POSTGRES_USER=db_user`  
+`POSTGRES_PASSWORD=db_password`  
+`POSTGRES_HOST=localhost`  
+`POSTGRES_PORT=5432`    
 
 # Docker
 
