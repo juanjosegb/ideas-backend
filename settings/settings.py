@@ -25,7 +25,8 @@ INSTALLED_APPS = [
     'graphene_django',
     'users',
     'ideas',
-    'followers'
+    'followers',
+    'django_filters',
 ]
 
 MIDDLEWARE = [

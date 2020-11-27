@@ -1,6 +1,7 @@
 import graphene
 from django.db.models import Q
 from graphql_jwt.decorators import login_required
+from graphene import relay
 
 from followers.models import Follow
 from ideas.models import Idea
@@ -9,7 +10,7 @@ from ideas.types import IdeaType
 
 class Query(graphene.AbstractType):
     my_ideas = graphene.List(IdeaType)
-    user_ideas = graphene.List(IdeaType)
+    user_ideas = relay.node.Field(IdeaType, user_id=graphene.String())
     timeline_ideas = graphene.List(IdeaType)
 
     @login_required
